@@ -20,6 +20,7 @@ export class Paciente{
         if(i.length('years') < 13){
             throw new Error("O dentista não atende menores de 13 anos");
         }
+        this.idade = Math.trunc(i.length('years'));
         this.dataNasc = data.toFormat('dd/MM/yyyy');
     }
 

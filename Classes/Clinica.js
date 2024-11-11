@@ -9,10 +9,9 @@ export class Clinica{
         this.telefone = telefone;
     }
 
-    addPaciente(p){
-        if(p){
-            this.#pacientes.push(p);
-        }
+    addPaciente(cpf, nome, dataNasc){
+        let paciente = new Paciente(cpf, nome, dataNasc);
+        this.#pacientes.push(paciente);
     }
 
     removePaciente(cpf){
