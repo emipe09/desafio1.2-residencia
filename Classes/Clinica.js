@@ -1,8 +1,10 @@
 import { DateTime, Interval } from 'luxon';
 import { Paciente } from './paciente.js';
+import { Consulta } from './Consulta.js';
 
 export class Clinica{
     #pacientes = [];
+    #consultas = [];
     constructor(nome, endereço, telefone){
         this.nome = nome;
         this.endereço = endereço;
@@ -18,6 +20,9 @@ export class Clinica{
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
         if(i != -1){
             this.#pacientes.splice(i, 1);
+        }
+        else{
+            console.log("Paciente não encontrado");
         }
     }
 
@@ -44,20 +49,42 @@ export class Clinica{
 
     agendarConsulta(cpf, data, horaInicial, horaFinal){
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
-        if((i != -1)&&(horaFinal>horaInicial)){
-            let dataConsulta = DateTime.fromFormat(data, 'dd/MM/yyyy');
-            //validando horario HHMM
-            if((horaInicial<0)||(horaInicial>2359)||(horaFinal<0)||(horaFinal>2359)){
-                throw new Error("Horário inválido");
-            }
-            if(dataConsulta.isValid){
-                this.#pacientes[i].agendarConsulta(dataConsulta);
-            }
+        let dataConsulta = DateTime.fromFormat(data, 'dd/MM/yyyy');
+        if(i != -1){
+            if((horaInicial<800)||(horaInicial>1900) &&(horaFinal>horaInicial)
+                &&((dataConsulta.isValid)&&(dataConsulta > DateTime.now()))
+                &&((horaInicial%100)%15 != 0 || (horaFinal%100)%15 != 0)){    
+                    let consulta = new Consulta(cpf, data, horaInicial, horaFinal);
+                    this.#consultas.push(consulta); 
+                }            
             else{
-                throw new Error("Data inválida");
+                console.log("Data ou horário inválida");
             }
+        }
+        else{
+            console.log("Paciente não encontrado");
+        }
+    }
+        
+
+    cancelarConsulta(cpf, data, horaInicial, horaFinal){
+        let i = this.#consultas.findIndex(p => p.cpf == cpf);
+        if(i != -1){
+            this.#consultas.splice(i, 1);
+        }
+        else{
+            console.log("Consulta não encontrada");
         }
     }
 
+    listarConsultas(){
+        this.#consultas.sort((a, b) => a.data.localeCompare(b.data));
+        console.log('-------------------------------------');
+        console.log('CPF | Data | Hora Inicial | Hora Final');
+        console.log('-------------------------------------');
+        this.#consultas.forEach(p => {
+            console.log(`${p.cpf} | ${p.data} | ${p.horaInicial} | ${p.horaFinal}`);
+        });
+    }
 
 }

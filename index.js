@@ -69,10 +69,33 @@ function menuPaciente(){
 function menuAgenda(){
     console.log('\n\n* Menu da Agenda *\n-------------------------------------------------------------------------------');
     console.log("1 - Agendar consulta\n2 - Cancelar consulta\n3 - Listar agenda\n4 - Voltar p/ menu principal");
-    console.log("5 - Voltar p/ menu principal");
     console.log('-------------------------------------------------------------------------------');
 
     let j = Number(readline('Escolha uma opção: '));
+    if(j==1){
+        let cpf = readline('Digite o CPF do paciente: ');
+        let data = readline('Digite a data da consulta: ');
+        let horaInicial = Number(readline('Digite a hora inicial: '));
+        let horaFinal = Number(readline('Digite a hora final: '));
+        clinica.agendarConsulta(cpf, data, horaInicial, horaFinal);
+        menuAgenda();
+    }
+    else if(j==2){
+        let cpf = readline('Digite o CPF do paciente: ');
+        
+        menuAgenda();
+    }
+    else if(j==3){
+        clinica.listarConsultas();
+        menuAgenda();
+    }
+    else if(j==4){
+        menuPrincipal();
+    }
+    else{
+        console.log('Opção inválida');
+    }
+
 }
 
 menuPrincipal();
