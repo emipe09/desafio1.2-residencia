@@ -51,9 +51,9 @@ export class Clinica{
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
         let dataConsulta = DateTime.fromFormat(data, 'dd/MM/yyyy');
         if(i != -1){
-            if((horaInicial<800)||(horaInicial>1900) &&(horaFinal>horaInicial)
-                &&((dataConsulta.isValid)&&(dataConsulta > DateTime.now()))
-                &&((horaInicial%100)%15 != 0 || (horaFinal%100)%15 != 0)){    
+            if((horaInicial>800 && horaInicial<1900) && (horaFinal>horaInicial)
+                &&((dataConsulta.isValid && dataConsulta > DateTime.now()))
+                &&((horaInicial%100)%15 == 0 || (horaFinal%100)%15 == 0)){    
                     let consulta = new Consulta(cpf, data, horaInicial, horaFinal);
                     this.#consultas.push(consulta); 
                 }            
