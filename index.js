@@ -21,7 +21,7 @@ function menuPrincipal(){
         console.log('Fim');
     }
     else{
-        console.log('Opção inválida');
+        throw new('Opção inválida');
     }
 }
 
@@ -91,8 +91,17 @@ function menuAgenda(){
         menuAgenda();
     }
     else if(j==2){
-        let cpf = readline('Digite o CPF do paciente: ');
-        
+        try{
+            let cpf = readline('Digite o CPF do paciente da consulta: ');
+            let data = readline('Digite a data da consulta: ');
+            let horaInicial = Number(readline('Digite a hora inicial da consulta: '));
+            clinica.cancelarConsulta(cpf, data, horaInicial);     
+            console.log("Consulta cancelada com sucesso!");
+        }
+        catch(e){
+            console.log("Erro: " + e.message);
+            console.log("Por favor, insira os dados novamente.\n");
+        }
         menuAgenda();
     }
     else if(j==3){
