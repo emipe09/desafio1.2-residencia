@@ -53,7 +53,7 @@ export class Clinica{
         if(i != -1){
             if((horaInicial>800 && horaInicial<1900) && (horaFinal>horaInicial)
                 &&((dataConsulta.isValid && dataConsulta > DateTime.now()))
-                &&((horaInicial%100)%15 == 0 || (horaFinal%100)%15 == 0)){    
+                &&((horaInicial%100)%15 == 0 && (horaFinal%100)%15 == 0)){    
                     let consulta = new Consulta(cpf, data, horaInicial, horaFinal);
                     this.#consultas.push(consulta); 
                 }            
