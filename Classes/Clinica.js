@@ -22,7 +22,7 @@ export class Clinica{
             this.#pacientes.splice(i, 1);
         }
         else{
-            console.log("Paciente não encontrado");
+            throw new error("Paciente não encontrado");
         }
     }
 
@@ -47,33 +47,25 @@ export class Clinica{
         });
     }
 
-    agendarConsulta(cpf, data, horaInicial, horaFinal){
+    agendarConsulta(cpf, dataConsulta, horaInicial, horaFinal){
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
-        let dataConsulta = DateTime.fromFormat(data, 'dd/MM/yyyy');
         if(i != -1){
-            if((horaInicial>800 && horaInicial<1900) && (horaFinal>horaInicial)
-                &&((dataConsulta.isValid && dataConsulta > DateTime.now()))
-                &&((horaInicial%100)%15 == 0 && (horaFinal%100)%15 == 0)){    
-                    let consulta = new Consulta(cpf, data, horaInicial, horaFinal);
-                    this.#consultas.push(consulta); 
-                }            
-            else{
-                console.log("Data ou horário inválida");
-            }
+            let consulta = new Consulta(cpf, dataConsulta, horaInicial, horaFinal);
+            this.#consultas.push(consulta);
         }
         else{
-            console.log("Paciente não encontrado");
+            throw new error("Paciente não encontrado");
         }
     }
         
 
-    cancelarConsulta(cpf, data, horaInicial, horaFinal){
-        let i = this.#consultas.findIndex(p => p.cpf == cpf);
+    cancelarConsulta(cpf, data, horaInicial){
+        let i = this.#consultas.findIndex(p => p.cpf == cpf && p.dataConsulta == data && p.horaInicial == horaInicial);
         if(i != -1){
             this.#consultas.splice(i, 1);
         }
         else{
-            console.log("Consulta não encontrada");
+            throw new error("Consulta não encontrada");
         }
     }
 
@@ -82,8 +74,8 @@ export class Clinica{
         console.log('-------------------------------------');
         console.log('CPF | Data | Hora Inicial | Hora Final');
         console.log('-------------------------------------');
-        this.#consultas.forEach(p => {
-            console.log(`${p.cpf} | ${p.data} | ${p.horaInicial} | ${p.horaFinal}`);
+        this.#consultas.forEach(c => {
+            console.log(`${c.cpf} | ${c.dataConsulta} | ${c.horaInicial} | ${c.horaFinal}`);
         });
     }
 

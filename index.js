@@ -73,11 +73,21 @@ function menuAgenda(){
 
     let j = Number(readline('Escolha uma opção: '));
     if(j==1){
-        let cpf = readline('Digite o CPF do paciente: ');
-        let data = readline('Digite a data da consulta: ');
-        let horaInicial = Number(readline('Digite a hora inicial: '));
-        let horaFinal = Number(readline('Digite a hora final: '));
-        clinica.agendarConsulta(cpf, data, horaInicial, horaFinal);
+        let consultaAgendada = false;
+        while (!consultaAgendada) {
+            try {
+                let cpf = readline('Digite o CPF do paciente: ');
+                let data = readline('Digite a data da consulta: ');
+                let horaInicial = Number(readline('Digite a hora inicial: '));
+                let horaFinal = Number(readline('Digite a hora final: '));
+                clinica.agendarConsulta(cpf, data, horaInicial, horaFinal);     
+                console.log("Consulta agendada com sucesso!");
+                consultaAgendada = true;
+            } catch (e) {
+                console.log("Erro: " + e.message);
+                console.log("Por favor, insira os dados novamente.\n");
+            }
+        }
         menuAgenda();
     }
     else if(j==2){
