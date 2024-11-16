@@ -1,6 +1,12 @@
 import { DateTime, Interval } from 'luxon';
 
 export class Paciente{
+    /**
+     * 
+     * @param {*} cpf -- identificador único, 11 caracteres
+     * @param {*} nome -- nome do paciente, mais de 5 caracteres
+     * @param {*} dataNasc -- data de nascimento do paciente, no formato dd/MM/yyyy
+     */
     constructor(cpf, nome, dataNasc){
         if(cpf.length!=11){
             throw new Error("CPF inválido");

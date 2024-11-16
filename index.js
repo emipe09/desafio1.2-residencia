@@ -1,10 +1,14 @@
-//Menu Principal
 
 import promptSync from 'prompt-sync';
 const readline = promptSync();
 
 import { Clinica } from "./Classes/Clinica.js"
 const clinica = new Clinica('Clinica Odontológica', 'Rua 1, 123', '1234-5678');
+
+/**
+ * Menu principal
+ */
+
 function menuPrincipal(){
     
     console.log('\n\n* Menu Principal* \n-------------------------------------------------------------------------------');
@@ -25,6 +29,9 @@ function menuPrincipal(){
     }
 }
 
+/**
+ * Menu do cadastro de pacientes
+ */
 function menuPaciente(){
     console.log('\n\n* Menu do Cadastro de Pacientes *\n-------------------------------------------------------------------------------');
     console.log("1 - Cadastrar novo paciente\n2 - Excluir paciente\n3 - Listar pacientes por nome\n4 - Listar pacientes por CPF");
@@ -65,7 +72,9 @@ function menuPaciente(){
     }
 
 }
-
+/**
+ * Menu da agenda
+ */
 function menuAgenda(){
     console.log('\n\n* Menu da Agenda *\n-------------------------------------------------------------------------------');
     console.log("1 - Agendar consulta\n2 - Cancelar consulta\n3 - Listar agenda\n4 - Voltar p/ menu principal");
@@ -117,6 +126,5 @@ function menuAgenda(){
 
 }
 
+// Inicia a aplicação
 menuPrincipal();
-
-
