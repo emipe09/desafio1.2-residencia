@@ -16,7 +16,6 @@ export class Consulta{
             &&((dataConsulta.isValid && dataConsulta > DateTime.now()))
             &&((horaInicial%100)%15 == 0 && (horaFinal%100)%15 == 0)){    
                 this.cpf = cpf;      
-                dataConsulta = dataConsulta.toFormat('dd/MM/yyyy');
                 this.dataConsulta = dataConsulta;
                 this.horaInicial = horaInicial;
                 this.horaFinal = horaFinal;

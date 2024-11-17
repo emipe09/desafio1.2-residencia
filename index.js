@@ -114,7 +114,16 @@ function menuAgenda(){
         menuAgenda();
     }
     else if(j==3){
-        clinica.listarConsultas();
+        console.log('Apresentar a agenda toda (T) ou apenas um período de datas (P)?');
+        let op = readline('Escolha uma opção: ');
+        if(op=='T'){
+            clinica.listarConsultas();
+        }
+        else if(op=='P'){
+            let dataInicio = readline('Digite a data de início: ');
+            let dataFim = readline('Digite a data de fim: ');
+            clinica.listarConsultas(dataInicio, dataFim);
+        }
         menuAgenda();
     }
     else if(j==4){

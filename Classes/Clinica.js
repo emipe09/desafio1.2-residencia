@@ -1,6 +1,8 @@
 import { Paciente } from './paciente.js';
 import { Consulta } from './Consulta.js';
 
+import { DateTime} from 'luxon';
+
 export class Clinica{
     #pacientes = []; //array de pacientes (objeto) da clínica
     #consultas = []; //array de consultas (objeto) da clínica
@@ -59,6 +61,12 @@ export class Clinica{
         console.log('-------------------------------------');
         this.#pacientes.forEach(p => {
             console.log(`${p.cpf} | ${p.nome} | ${p.dataNasc} | ${p.idade}`);
+            // Verificar se o paciente tem consultas agendadas
+            this.#consultas.forEach(c => {
+                if(c.cpf == p.cpf){
+                    console.log(`Agendado para: ${c.dataConsulta}\n ${c.horaInicial} às ${c.horaFinal}`);
+                    }
+                });
         });
 
     }
@@ -73,6 +81,12 @@ export class Clinica{
         console.log('-------------------------------------');
         this.#pacientes.forEach(p => {
             console.log(`${p.cpf} | ${p.nome} | ${p.dataNasc} | ${p.idade}`);
+            // Verificar se o paciente tem consultas agendadas
+            this.#consultas.forEach(c => {
+                if(c.cpf == p.cpf){
+                    console.log(`Agendado para: ${c.dataConsulta.toFormat('dd/MM/yyyy')}\n ${c.horaInicial} às ${c.horaFinal}`);
+                    }
+                });
         });
     }
 
@@ -116,16 +130,26 @@ export class Clinica{
     }
 
     /**
-     * Lista as consultas agendadas na clínica em ordem crescente de data
+     * Lista as consultas agendadas para um determinado dia, em ordem crescente de horário
      */
-    listarConsultas(){
-        this.#consultas.sort((a, b) => a.dataConsulta.localeCompare(b.dataConsulta));
+    listarConsultas(dataInicio, dataFim) {
+        // Cópia do array de consultas para não alterar o original
+        let consultas = this.#consultas;
+        if (dataInicio && dataFim) {
+            dataInicio = DateTime.fromFormat(dataInicio, 'dd/MM/yyyy');
+            dataFim = DateTime.fromFormat(dataFim, 'dd/MM/yyyy');
+            if (!dataInicio.isValid || !dataFim.isValid) {
+                throw new Error('Data inválida');
+            }
+            consultas = consultas.filter(c => c.dataConsulta >= dataInicio && c.dataConsulta <= dataFim);
+        }
+        consultas.sort((a, b) => a.dataConsulta.toFormat('dd/MM/yyyy').localeCompare(b.dataConsulta.toFormat('dd/MM/yyyy')));
         console.log('-------------------------------------');
         console.log('CPF | Data | Hora Inicial | Hora Final');
         console.log('-------------------------------------');
-        this.#consultas.forEach(c => {
-            console.log(`${c.cpf} | ${c.dataConsulta} | ${c.horaInicial} | ${c.horaFinal}`);
+        consultas.forEach(c => {
+            console.log(`${c.cpf} | ${c.dataConsulta.toFormat('dd/MM/yyyy')} | ${c.horaInicial} | ${c.horaFinal}`);
         });
     }
-
+    
 }
