@@ -43,11 +43,15 @@ export class Clinica{
      */
     removePaciente(cpf){
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
-        if(i != -1){
+        let j = this.#consultas.findIndex(c => c.cpf == cpf);
+        if(i != -1 && j == -1){
             this.#pacientes.splice(i, 1);
         }
+        else if(j != -1){
+            throw new Error("Paciente possuí consultas agendadas");
+        }
         else{
-            throw new Error("Paciente não encontrado");
+            throw new Error("CPF não encontrado");
         }
     }
 
@@ -64,7 +68,7 @@ export class Clinica{
             // Verificar se o paciente tem consultas agendadas
             this.#consultas.forEach(c => {
                 if(c.cpf == p.cpf){
-                    console.log(`Agendado para: ${c.dataConsulta}\n ${c.horaInicial} às ${c.horaFinal}`);
+                    console.log(`Agendado para: ${c.dataConsulta.toFormat('dd/MM/yyyy')}\n ${c.horaInicial} às ${c.horaFinal}`);
                     }
                 });
         });
@@ -102,13 +106,19 @@ export class Clinica{
      */
     agendarConsulta(cpf, dataConsulta, horaInicial, horaFinal){
         let i = this.#pacientes.findIndex(p => p.cpf == cpf);
-        let j = this.#consultas.findIndex(c => c.dataConsulta == dataConsulta && c.horaInicial == horaInicial);
+        let j = this.#consultas.findIndex(c => c.dataConsulta.toFormat('dd/MM/yyyy') == dataConsulta && (horaInicial >= c.horaInicial && horaInicial < c.horaFinal) ||
+        (horaFinal > c.horaInicial && horaFinal <= c.horaFinal) || 
+        (horaInicial <= c.horaInicial && horaFinal >= c.horaFinal));
+        console.log(j);
         if(i != -1 && j == -1){
             let consulta = new Consulta(cpf, dataConsulta, horaInicial, horaFinal);
             this.#consultas.push(consulta);
         }
-        else{
+        else if(i == -1){
             throw new Error("Paciente não encontrado");
+        }
+        else if(j != -1){
+            throw new Error("Horário indisponível");
         }
     }
         
@@ -120,7 +130,7 @@ export class Clinica{
      * Cancelar uma consulta agendada, acessando a classe Consulta e removendo do array de consultas
      */
     cancelarConsulta(cpf, data, horaInicial){
-        let i = this.#consultas.findIndex(p => p.cpf == cpf && p.dataConsulta == data && p.horaInicial == horaInicial);
+        let i = this.#consultas.findIndex(c => c.cpf == cpf && c.dataConsulta.toFormat('dd/MM/yyyy') == data && c.horaInicial == horaInicial);
         if(i != -1){
             this.#consultas.splice(i, 1);
         }

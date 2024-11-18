@@ -19,16 +19,16 @@ export class Paciente{
         this.nome = nome;
 
         let data = DateTime.fromFormat(dataNasc, 'dd/MM/yyyy');
-        if(!data.isValid){
+        if(!data.isValid|| data > DateTime.now()){
             throw new Error("Data inválida");
         }
         let i = Interval.fromDateTimes(data, DateTime.now());
-        let idade = Math.trunc(i.length('years'));
-        if(idade < 13){
+        if(i.length('years') < 13 ){
             throw new Error("O dentista não atende menores de 13 anos");
         }
-        this.idade = idade;
+        this.idade = Math.trunc(i.length('years'));
         this.dataNasc = data.toFormat('dd/MM/yyyy');
+        
     }
 
 

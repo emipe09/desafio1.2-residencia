@@ -39,21 +39,32 @@ function menuPaciente(){
     console.log('-------------------------------------------------------------------------------');
 
     let j = Number(readline('Escolha uma opção: '));
-    if(j==1){
-        let cpf = readline('Digite o CPF: ');
-        let nome = readline('Digite o nome: ');
-        let dataNasc = readline('Digite a data de nascimento: ');
-        try{
-            clinica.addPaciente(cpf, nome, dataNasc);
-        }
-        catch(e){
-            console.log(e.message);
-        }
+    if (j == 1) {
+        let cadastroRealizado = false;
+        while (!cadastroRealizado) {
+            try {
+                let cpf = readline('Digite o CPF: ');
+                let nome = readline('Digite o nome: ');
+                let dataNasc = readline('Digite a data de nascimento: ');
+                clinica.addPaciente(cpf, nome, dataNasc);
+                console.log('Paciente cadastrado com sucesso!');
+                cadastroRealizado = true;
+            }
+            catch (e) {
+                console.log(e.message);
+                console.log("Por favor, insira os dados novamente.\n");
+            }
+    }
         menuPaciente();
     }
     else if(j==2){
-        let cpf = readline('Digite o CPF do paciente a ser excluído: ');
-        clinica.removePaciente(cpf);
+        try {
+            let cpf = readline('Digite o CPF do paciente a ser excluído: ');
+            clinica.removePaciente(cpf);
+        }
+        catch(e){
+            console.log("Erro: " + e.message);
+        }
         menuPaciente();
     }
     else if(j==3){
@@ -100,22 +111,27 @@ function menuAgenda(){
         menuAgenda();
     }
     else if(j==2){
-        try{
-            let cpf = readline('Digite o CPF do paciente da consulta: ');
-            let data = readline('Digite a data da consulta: ');
-            let horaInicial = Number(readline('Digite a hora inicial da consulta: '));
-            clinica.cancelarConsulta(cpf, data, horaInicial);     
-            console.log("Consulta cancelada com sucesso!");
-        }
-        catch(e){
-            console.log("Erro: " + e.message);
-            console.log("Por favor, insira os dados novamente.\n");
+        let consultaCancelada = false;
+        while (!consultaCancelada) {
+            try {
+                let cpf = readline('Digite o CPF do paciente da consulta: ');
+                let data = readline('Digite a data da consulta: ');
+                let horaInicial = Number(readline('Digite a hora inicial da consulta: '));
+                clinica.cancelarConsulta(cpf, data, horaInicial);
+                console.log("Consulta cancelada com sucesso!");
+                consultaCancelada = true;
+            }
+            catch (e) {
+                console.log("Erro: " + e.message);
+                console.log("Por favor, insira os dados novamente.\n");
+            }
         }
         menuAgenda();
     }
     else if(j==3){
         console.log('Apresentar a agenda toda (T) ou apenas um período de datas (P)?');
         let op = readline('Escolha uma opção: ');
+        op = op.toUpperCase();
         if(op=='T'){
             clinica.listarConsultas();
         }
