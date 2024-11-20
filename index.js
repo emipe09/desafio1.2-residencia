@@ -3,29 +3,38 @@ import promptSync from 'prompt-sync';
 const readline = promptSync();
 
 import { Clinica } from "./Classes/Clinica.js"
+
+// Instanciando a clinica
 const clinica = new Clinica('Clinica Odontológica', 'Rua 1, 123', '1234-5678');
 
 /**
  * Menu principal
  */
 
-function menuPrincipal(){
-    
-    console.log('\n\n* Menu Principal* \n-------------------------------------------------------------------------------');
-    console.log('1 - Cadastro de Paciente\n2 - Agenda\n3 - Fim');
-    console.log('-------------------------------------------------------------------------------');
-    let i = Number(readline('Escolha uma opção: '));
-    if(i==1){
-        menuPaciente();
+function menuPrincipal() {
+    try {
+        console.log('\n\n* Menu Principal* \n-------------------------------------------------------------------------------');
+        console.log('1 - Cadastro de Paciente\n2 - Agenda\n3 - Fim');
+        console.log('-------------------------------------------------------------------------------');
+        let i = Number(readline('Escolha uma opção: '));
+        if (i == 1) {
+            menuPaciente();
+        }
+        else if (i == 2) {
+            menuAgenda();
+        }
+        else if (i == 3) {
+            console.log('Fim');
+        }
+        else {
+            throw new Error('Opção inválida');
+        }
     }
-    else if(i==2){
-        menuAgenda();
-    }
-    else if(i==3){
-        console.log('Fim');
-    }
-    else{
-        throw new('Opção inválida');
+    catch (e) {
+        console.log('Erro: ' + e.message);
+        if(e.message == 'Opção inválida'){
+            menuPrincipal();
+        }
     }
 }
 
@@ -79,7 +88,7 @@ function menuPaciente(){
         menuPrincipal();
     }
     else{
-        console.log('Opção inválida');
+        throw new Error('Opção inválida');
     }
 
 }
@@ -146,10 +155,16 @@ function menuAgenda(){
         menuPrincipal();
     }
     else{
-        console.log('Opção inválida');
+        throw new Error('Opção inválida');
     }
 
 }
 
 // Inicia a aplicação
-menuPrincipal();
+try{
+    menuPrincipal();
+}
+catch(e){
+    console.log('Erro: ' + e.message);
+}
+
